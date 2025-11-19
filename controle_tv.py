@@ -3,8 +3,7 @@ import os
 import time
 
 FIRE_TVS = [
-    "192.168.15.148",  
-    "192.168.15.140",  
+    "192.168.15.152",   
 ]
 FIRE_TV_PORT = 5555
 URL_SISTEMA = "https://irb.klingo.app/#/painel/NZTMLK"
