@@ -3,7 +3,7 @@ import time
 from ppadb.client import Client as AdbClient
 
 # IP da TV1
-TV1_IP = "192.168.15.152"
+TV1_IP = "192.168.15.145"
 PORT = 5555
 
 # Caminho onde o screenshot será salvo

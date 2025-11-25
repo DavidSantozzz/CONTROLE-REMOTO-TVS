@@ -6,7 +6,7 @@ import time
 app = Flask(__name__)
 
 FIRE_TVS = [
-    "192.168.15.152",
+    "192.168.15.145",
 ]
 FIRE_TV_PORT = 5555
 URL_SISTEMA = "https://irb.klingo.app/#/painel/NZTMLK"
