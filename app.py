@@ -5,20 +5,23 @@ import time
 
 app = Flask(__name__)
 
-FIRE_TVS = [
-    "192.168.15.145",
-]
+TVS = {
+    "tv1": "192.168.15.145",
+    "tv2": "192.168.15.128",
+    "tv3": "192.168.15.138",
+    "tv4": "192.168.15.131",
+    "tv5": "192.168.15.132",
+    "tv6": "192.168.15.130",
+    "tv7": "192.168.15.129"
+}
+
 FIRE_TV_PORT = 5555
 URL_SISTEMA = "https://irb.klingo.app/#/painel/NZTMLK"
-
-# Pasta onde as imagens temporárias são salvas
-SCREEN_DIR = "screenshots"
-os.makedirs(SCREEN_DIR, exist_ok=True)
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", tvs=list(TVS.keys()))
 
 
 @app.route("/abrir")
@@ -26,9 +29,8 @@ def abrir_site():
     resultados = []
     client = AdbClient(host="127.0.0.1", port=5037)
 
-    for ip in FIRE_TVS:
+    for nome, ip in TVS.items():
         try:
-            print(f"\n Conectando ao Fire TV {ip}...")
             device = client.device(f"{ip}:{FIRE_TV_PORT}")
 
             if not device:
@@ -38,19 +40,22 @@ def abrir_site():
 
             if device:
                 device.shell(f'am start -a android.intent.action.VIEW -d "{URL_SISTEMA}"')
-                resultados.append({"ip": ip, "status": "Site aberto com sucesso!"})
+                resultados.append({"tv": nome, "status": "OK"})
             else:
-                resultados.append({"ip": ip, "status": "Falha ao conectar"})
+                resultados.append({"tv": nome, "status": "Falha"})
+
         except Exception as e:
-            resultados.append({"ip": ip, "status": f"Erro: {str(e)}"})
+            resultados.append({"tv": nome, "status": f"Erro: {str(e)}"})
 
     return jsonify(resultados)
 
 
+@app.route("/<tv>")
+def screen(tv):
+    pasta = os.path.join("screenshots", tv)
+    arquivo = "screenshot.png"
 
-@app.route("/tv1")
-def tv1_screen():
-    return send_from_directory(os.path.join("screenshots", "tv1"), "screenshot.png")
+    return send_from_directory(pasta, arquivo)
 
 
 if __name__ == "__main__":

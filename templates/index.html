@@ -23,85 +23,29 @@
     button:hover {
       background-color: #0056b3;
     }
-    .container{
-      width: 90%;
-      margin: 10px auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .row{
+    .center{
+      height: 90vh;
       width: 100%;
-      height: 300px;
-      background-color: #007bff;
       display: flex;
-      justify-content: space-evenly;
+      justify-content: center;
       align-items: center;
-      margin-bottom: 5px;
-    }
-    .TV{
-      width: 390px;
-      height: 90%;
-      margin-left: 5px;
+      flex-direction: column;
     }
   </style>
 </head>
 <body>
-  <h1>Controle Fire TV</h1>
-  <button onclick="abrirSite()">Abrir sistema na TV</button>
-  <p id="status"></p>
-
-  <div class="container">
-    <div class="row">
-      <div class="TV">
-        <p>TV1</p>
-        <img id="tv1-img" src="/tv1" alt="Última imagem da TV1" width="400">
-      </div>
-      <div class="TV">
-        <p>TV2</p>
-        <img id="tv1-img" src="/tv2" alt="Última imagem da TV1" width="400">
-      </div>
-      <div class="TV">
-        <p>TV3</p>
-        <img id="tv1-img" src="/tv3" alt="Última imagem da TV1" width="400">
-      </div>
-    </div>
-    <div class="row">
-      <div class="TV">
-        <p>TV4</p>
-        <img id="tv1-img" src="/tv4" alt="Última imagem da TV1" width="400">
-      </div>
-      <div class="TV">
-        <p>TV5</p>
-        <img id="tv1-img" src="/tv5" alt="Última imagem da TV1" width="400">
-      </div>
-      <div class="TV">
-        <p>TV6</p>
-        <img id="tv1-img" src="/tv6" alt="Última imagem da TV1" width="400">
-      </div>
-      <div class="TV">
-        <p>TV7</p>
-        <img id="tv1-img" src="/tv7" alt="Última imagem da TV1" width="400">
-      </div>
-    </div>
+  <div class="center">
+    <button onclick="abrirSite()">Abrir sistema em TODAS as TVs</button>
+    <p id="status"></p>
   </div>
-
   <script>
     async function abrirSite() {
-      document.getElementById("status").textContent = "Enviando comando...";
+      document.getElementById("status").textContent = "Enviando...";
       const resposta = await fetch("/abrir");
-      const dados = await resposta.json();
-      document.getElementById("status").textContent = dados.message;
-    }
-    etInterval(() => {
-      const img = document.getElementById("tv1-img");
-      img.src = `/tv1?t=${Date.now()}`;  // força a atualização
-    }, 1000);
-
-    async function abrirSite() {
-      await fetch("/abrir");
+      document.getElementById("status").textContent = "Comando enviado!";
     }
   </script>
 </body>
+
+
 </html>
