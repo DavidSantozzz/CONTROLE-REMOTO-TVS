@@ -26,37 +26,25 @@ def index():
 
 @app.route("/abrir")
 def abrir_site():
-    resultados = []
     client = AdbClient(host="127.0.0.1", port=5037)
+    resultados = []
 
     for nome, ip in TVS.items():
         try:
             device = client.device(f"{ip}:{FIRE_TV_PORT}")
 
-            if not device:
-                os.system(f"adb connect {ip}:{FIRE_TV_PORT}")
-                time.sleep(2)
-                device = client.device(f"{ip}:{FIRE_TV_PORT}")
-
             if device:
                 device.shell(f'am start -a android.intent.action.VIEW -d "{URL_SISTEMA}"')
-                resultados.append({"tv": nome, "status": "OK"})
+                status = "OK"
             else:
-                resultados.append({"tv": nome, "status": "Falha"})
+                status = "Não conectado (rode o .bat de conexão)"
 
         except Exception as e:
-            resultados.append({"tv": nome, "status": f"Erro: {str(e)}"})
+            status = f"Erro: {str(e)}"
+
+        resultados.append({"tv": nome, "status": status})
 
     return jsonify(resultados)
-
-
-@app.route("/<tv>")
-def screen(tv):
-    pasta = os.path.join("screenshots", tv)
-    arquivo = "screenshot.png"
-
-    return send_from_directory(pasta, arquivo)
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
